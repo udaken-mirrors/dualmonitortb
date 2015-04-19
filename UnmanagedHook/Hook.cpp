@@ -1,36 +1,20 @@
 // This is the main DLL file.
 //#pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-
-#define WINVER 			0x0600
-#define _WIN32_WINNT	0x0600
-#define _WIN32_IE		0x0700
-#define _UNICODE		1
-#define UNICODE			1
-#define STRICT
-#define STRICT_CONST
-#define STRICT_TYPED_ITEMIDS
-
 #include "Hook.h"
 #include "windows.h"
-#include "olectl.h"
+#include "atlbase.h"
 #include "shlobj.h"
 #include "winuser.h"
 #include "Shobjidl.h"
 #include "commctrl.h"
-#include "Shlwapi.h"
-#include "comip.h"
-#include "comdef.h"
-
-#pragma comment(lib,"Shlwapi.lib")
 
 #pragma warning(push)
 #pragma warning(disable: 4996) // std::_Copy_impl - Function call with parameters that may be unsafe #include <algorithm> #pragma warning(pop)
 
 #include <sstream>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 HWND toolbarListenerWindow;
@@ -160,13 +144,9 @@ BOOL SaveIconToFile(HICON hico, LPCTSTR szFileName, BOOL bAutoDelete)
 {	
 	PICTDESC pd = {sizeof(pd), PICTYPE_ICON};
 	pd.icon.hicon = hico;
-	
-#ifdef _ATL_VER
-	typedef CComPtr<IPicture> IPicturePtr;
-	typedef CComPtr<IStream> IStreamPtr;
-#endif
-	IPicturePtr pPict = NULL;
-	IStreamPtr  pStrm = NULL;
+
+	CComPtr<IPicture> pPict = NULL;
+	CComPtr<IStream>  pStrm = NULL;
 	LONG cbSize = 0;
 
 	if (!SUCCEEDED( ::CreateStreamOnHGlobal(NULL, TRUE, &pStrm) )) return FALSE;
