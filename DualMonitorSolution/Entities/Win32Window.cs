@@ -175,15 +175,18 @@ namespace DualMonitor.Entities
      
         public void MoveWindowTo(Screen screen)
         {
-            if (!this.Screen.Equals(screen))
+            if (!Screen.Equals(screen))
             {
                 Native.RECT r;
                 Native.GetWindowRect(Handle, out r);
 
-                int dx = r.left - Screen.PrimaryScreen.Bounds.Left;
-                int dy = r.top - Screen.PrimaryScreen.Bounds.Top;
+                var width = (screen.Bounds.Right + screen.Bounds.Left) / 2;
+                var height = (screen.Bounds.Bottom + screen.Bounds.Top) / 2;
 
-                Native.MoveWindow(Handle, screen.Bounds.Left + dx, screen.Bounds.Top + dy, r.right - r.left, r.bottom - r.top, true);
+                var windowWidth = r.right - r.left;
+                var windowHeight = r.bottom - r.top;
+
+                Native.MoveWindow(Handle, width - windowWidth/2, height - windowHeight/2, windowWidth, windowHeight, true);
             }
         }
 
