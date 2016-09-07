@@ -337,7 +337,6 @@
     <None Include="Resources\more_classic_right.png" />
     <Content Include="Resources\more_classic_up.png" />
     <None Include="Resources\start_classic.png" />
-    <None Include="Resources\show_dekstop_horizontal.png" />
     <None Include="Resources\show_desktop_horizontal.png" />
     <None Include="Resources\show_desktop_classic.png" />
     <None Include="Resources\multiple_monitors.png" />

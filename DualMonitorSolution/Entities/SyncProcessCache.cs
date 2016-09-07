@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DualMonitor.Entities
 {
     class SyncProcessCache
     {
-        private static object _syncCachedProc = new object();
-        private Dictionary<int, SecondDisplayProcess> _cachedProcesses = new Dictionary<int,SecondDisplayProcess>();
+        private static readonly object _syncCachedProc = new object();
+        private readonly Dictionary<int, SecondDisplayProcess> _cachedProcesses = new Dictionary<int,SecondDisplayProcess>();
 
         public void Remove(int key)
         {

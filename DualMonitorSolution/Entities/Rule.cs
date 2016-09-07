@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 
 namespace DualMonitor.Entities
 {
@@ -15,7 +11,7 @@ namespace DualMonitor.Entities
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         public string Class { get; set; }
@@ -38,7 +34,7 @@ namespace DualMonitor.Entities
 
         internal Rule Clone()
         {
-            return (Rule)this.MemberwiseClone();
+            return (Rule)MemberwiseClone();
         }
     }
 

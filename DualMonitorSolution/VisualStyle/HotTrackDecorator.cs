@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using DualMonitor.Entities;
 using DualMonitor.GraphicUtils;
 
@@ -35,7 +31,7 @@ namespace DualMonitor.VisualStyle
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
-                    System.Drawing.Color pixel = bitmap.GetPixel(x, y);
+                    var pixel = bitmap.GetPixel(x, y);
 
                     if (!IsColorSaturated(pixel))
                     {

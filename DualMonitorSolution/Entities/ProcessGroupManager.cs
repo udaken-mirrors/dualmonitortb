@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using DualMonitor.Controls;
 using System.Drawing;
+using System.Linq;
 
 namespace DualMonitor.Entities
 {
     public class ProcessGroupManager
     {
-        private Dictionary<string, ProcessGroup> _groups = new Dictionary<string, ProcessGroup>();
-        private TaskbarFlow _flow;
+        private readonly Dictionary<string, ProcessGroup> _groups = new Dictionary<string, ProcessGroup>();
+        private readonly TaskbarFlow _flow;
 
         public ProcessGroupManager(TaskbarFlow flow)
         {
@@ -77,28 +75,19 @@ namespace DualMonitor.Entities
 
         public bool MoveButtonToPoint(Point clientCoords, BaseTaskbarButton button)
         {
-            bool moved = false;
-            ProcessGroup draggedGroup = null;
-
-            foreach (var item in _groups.Values)
-            {
-                if (item.Contains(button))
-                {
-                    draggedGroup = item;
-                    break;
-                }
-            }
+            var moved = false;
+            var draggedGroup = _groups.Values.FirstOrDefault(item => item.Contains(button));
 
             if (draggedGroup == null) return false; 
 
             foreach (var path in _groups.Keys)
             {
-                ProcessGroup group = _groups[path];
+                var group = _groups[path];
 
                 if (group == draggedGroup || group.Count == 0) continue;
 
-                Rectangle bounds = group.GetBounds();
-                int index = -1;
+                var bounds = group.GetBounds();
+                var index = -1;
 
                 var taskbarLocation = _flow.MainForm.TaskbarLocation;
 

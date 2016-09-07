@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using DualMonitor.Win32;
 using System.Runtime.InteropServices;
@@ -39,10 +36,12 @@ namespace DualMonitor.VisualStyle
                     DwmColorizationColor = Color.FromArgb(100, DwmColorizationColor);
             }
 
-            _bbParams = new DwmApi.DWM_BLURBEHIND();
-            _bbParams.dwFlags = DwmApi.DwmFlags.DWM_BB_ENABLE;
-            _bbParams.fEnable = true;
-            _bbParams.hRgnBlur = IntPtr.Zero;
+            _bbParams = new DwmApi.DWM_BLURBEHIND
+            {
+                dwFlags = DwmApi.DwmFlags.DWM_BB_ENABLE,
+                fEnable = true,
+                hRgnBlur = IntPtr.Zero
+            };
         }
 
         /// <summary>
@@ -79,12 +78,14 @@ namespace DualMonitor.VisualStyle
         /// Get thumbnail size
         /// </summary>
         public void GetThumbnailSize(IntPtr thumbnail, out Size size)
-        {            
-            DwmApi.DWM_THUMBNAIL_PROPERTIES dskThumbProps = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
-            dskThumbProps.dwFlags = DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_SOURCECLIENTAREAONLY;
-            dskThumbProps.fSourceClientAreaOnly = true;
-            dskThumbProps.fVisible = false;
-            dskThumbProps.opacity = 255;
+        {
+            DwmApi.DWM_THUMBNAIL_PROPERTIES dskThumbProps = new DwmApi.DWM_THUMBNAIL_PROPERTIES
+            {
+                dwFlags = DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_SOURCECLIENTAREAONLY,
+                fSourceClientAreaOnly = true,
+                fVisible = false,
+                opacity = 255
+            };
 
             DwmApi.DwmUpdateThumbnailProperties(thumbnail, ref dskThumbProps);
 
@@ -104,14 +105,16 @@ namespace DualMonitor.VisualStyle
                 bottom = r.Bottom
             };
 
-            DwmApi.DWM_THUMBNAIL_PROPERTIES dskThumbProps = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
-            dskThumbProps.dwFlags = DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_SOURCECLIENTAREAONLY 
-                | DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_VISIBLE
-                | DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_RECTDESTINATION;
-            dskThumbProps.fSourceClientAreaOnly = true;
-            dskThumbProps.fVisible = true;
-            dskThumbProps.opacity = 255;
-            dskThumbProps.rcDestination = dest;
+            DwmApi.DWM_THUMBNAIL_PROPERTIES dskThumbProps = new DwmApi.DWM_THUMBNAIL_PROPERTIES
+            {
+                dwFlags = DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_SOURCECLIENTAREAONLY
+                          | DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_VISIBLE
+                          | DwmApi.DWM_THUMBNAIL_FLAGS.DWM_TNP_RECTDESTINATION,
+                fSourceClientAreaOnly = true,
+                fVisible = true,
+                opacity = 255,
+                rcDestination = dest
+            };
 
             DwmApi.DwmUpdateThumbnailProperties(thumbnail, ref dskThumbProps);
         }
@@ -123,7 +126,7 @@ namespace DualMonitor.VisualStyle
         {
             var status = Marshal.AllocHGlobal(sizeof(int));
             Marshal.WriteInt32(status, 1); // true
-            int res = DwmApi.DwmSetWindowAttribute(hwnd, DwmApi.DWMWINDOWATTRIBUTE.DWMWA_EXCLUDED_FROM_PEEK, status, sizeof(int));
+            DwmApi.DwmSetWindowAttribute(hwnd, DwmApi.DWMWINDOWATTRIBUTE.DWMWA_EXCLUDED_FROM_PEEK, status, sizeof(int));
         }
     }
 }

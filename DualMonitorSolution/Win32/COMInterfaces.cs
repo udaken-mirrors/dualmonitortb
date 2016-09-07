@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
 
 namespace DualMonitor.Win32
 {
@@ -38,6 +34,9 @@ namespace DualMonitor.Win32
         /// Items may appear in both the frequent and recent lists.  
         /// </summary>
         /// <param name="?"></param>
+        /// <param name="listtype"></param>
+        /// <param name="cItemsDesired"></param>
+        /// <param name="riid"></param>
         /// <returns></returns>
         [return: MarshalAs(UnmanagedType.IUnknown)]
         object GetList([In] ADLT listtype, [In] uint cItemsDesired, [In] ref Guid riid);

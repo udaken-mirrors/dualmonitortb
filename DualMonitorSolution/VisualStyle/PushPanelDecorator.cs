@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 using DualMonitor.Entities;
@@ -64,10 +61,12 @@ namespace DualMonitor.VisualStyle
                 _clipRegion = new Region(new Rectangle(0, 0, _width, _height - 3));
             }
 
-            _pgp = new PathGradientBrush(_gp);
-            _pgp.CenterPoint = new PointF(_width / 2, _height);
-            _pgp.CenterColor = Theme.HoverBackLightFrom;
-            _pgp.SurroundColors = new Color[] { Theme.HoverBackLightTo };
+            _pgp = new PathGradientBrush(_gp)
+            {
+                CenterPoint = new PointF(_width/2, _height),
+                CenterColor = Theme.HoverBackLightFrom,
+                SurroundColors = new[] {Theme.HoverBackLightTo}
+            };
 
             _upperBounds = new Rectangle(1, _height / 2 - ClickedFadeWidth, _width - (2 + _padding.Left + _padding.Right), ClickedFadeWidth);
             _lowerBounds = new Rectangle(1, _height / 2, _width - (2 + _padding.Left + _padding.Right), ClickedFadeWidth);
@@ -152,10 +151,7 @@ namespace DualMonitor.VisualStyle
                 _upperGradient.Dispose();
             }
 
-            if (_clipRegion != null)
-            {
-                _clipRegion.Dispose();
-            }
+            _clipRegion?.Dispose();
         }
 
         #endregion
