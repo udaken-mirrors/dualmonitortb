@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DualMonitor.Entities;
+﻿using DualMonitor.Entities;
 using System.Drawing;
 using DualMonitor.GraphicUtils;
 
@@ -10,7 +6,7 @@ namespace DualMonitor.VisualStyle
 {
     public class ProgressBarDecorator
     {
-        public static void Paint(System.Drawing.Graphics g, System.Drawing.Rectangle _buttonBounds, Entities.TaskbarProgress _progress)
+        public static void Paint(Graphics g, Rectangle _buttonBounds, TaskbarProgress _progress)
         {
             if (_progress.State == TaskbarProgressState.NoProgress || _progress.Value == -1) return;
 

@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Drawing;
-using DualMonitor.Win32;
 using DualMonitor.Entities;
 
 namespace DualMonitor.Rules
 {
     public class RuleManager
     {
-        private string _userDataPath = System.IO.Path.Combine(
+        private readonly string _userDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Application.ProductName, "IconsCache");
-        private List<Rule> _rules;
-        private WindowManager _windowManager;
+        private readonly List<Rule> _rules;
+        private readonly WindowManager _windowManager;
 
         public RuleManager(List<Rule> rules, WindowManager windowManager) 
         {
@@ -55,7 +53,7 @@ namespace DualMonitor.Rules
             if (!Directory.Exists(_userDataPath)) Directory.CreateDirectory(_userDataPath);
 
             string filename = _userDataPath + "\\" + Guid.NewGuid().ToString() + ".png";
-            if (!saveJpeg(filename, bmp, 100))
+            if (!SaveJpeg(filename, bmp, 100))
             {
                 return null;
             }
@@ -63,19 +61,18 @@ namespace DualMonitor.Rules
             return filename;
         }
 
-        private bool saveJpeg(string path, Bitmap img, long quality)
+        private bool SaveJpeg(string path, Bitmap img, long quality)
         {
             // Encoder parameter for image quality
-            EncoderParameter qualityParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter qualityParam = new EncoderParameter(Encoder.Quality, quality);
 
             // Jpeg image codec
-            ImageCodecInfo jpegCodec = this.GetEncoderInfo(ImageFormat.Png);
+            ImageCodecInfo jpegCodec = GetEncoderInfo(ImageFormat.Png);
 
             if (jpegCodec == null)
                 return false;
 
-            EncoderParameters encoderParams = new EncoderParameters(1);
-            encoderParams.Param[0] = qualityParam;
+            EncoderParameters encoderParams = new EncoderParameters(1) {Param = {[0] = qualityParam}};
 
             img.Save(path, jpegCodec, encoderParams);
 
@@ -85,12 +82,7 @@ namespace DualMonitor.Rules
         private ImageCodecInfo GetEncoderInfo(ImageFormat format)
         {
             ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
-            for (int j = 0; j < encoders.Length; ++j)
-            {
-                if (encoders[j].FormatID == format.Guid)
-                    return encoders[j];
-            }
-            return null;
+            return encoders.FirstOrDefault(t => t.FormatID == format.Guid);
         }
 
         internal void MatchRule(Win32Window window)
@@ -125,10 +117,7 @@ namespace DualMonitor.Rules
                     BaseRuleAction action = 
                         RuleActionFactory.CreateAction(RuleActionType.Move, rule.MoveAction, window, _windowManager);
 
-                    if (action != null)
-                    {
-                        action.Handle();
-                    }
+                    action?.Handle();
                 }
             }
         }
@@ -157,12 +146,7 @@ namespace DualMonitor.Rules
         internal static List<Rule> Clone(IEnumerable<Rule> list)
         {
             // use a copy of the existing rules and work with this list            
-            var rules = new List<DualMonitor.Entities.Rule>();
-            foreach (var rule in list)
-            {
-                rules.Add(rule.Clone());
-            }
-            return rules;
+            return list.Select(rule => rule.Clone()).ToList();
         }
     }
 }

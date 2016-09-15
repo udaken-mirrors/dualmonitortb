@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using DualMonitor.Win32;
-using System.Threading;
 
 namespace DualMonitor.Entities
 {
@@ -13,7 +9,7 @@ namespace DualMonitor.Entities
     {
         protected Win32Window(IntPtr handle)
         {
-            this._handle = handle;
+            _handle = handle;
         }
 
         public static Win32Window FromHandle(IntPtr handle)
@@ -23,53 +19,23 @@ namespace DualMonitor.Entities
 
         public static Win32Window FromClassName(string className)
         {
-            IntPtr hwnd = Native.FindWindow(className, null);
-            return Win32Window.FromHandle(hwnd);
+            var hwnd = Native.FindWindow(className, null);
+            return FromHandle(hwnd);
         }
 
         protected IntPtr _handle;
-        protected string _title;
+        public string _title;
         protected string _path;
         protected string _arguments;
         protected Icon _icon;
         protected Icon _smallIcon;
         protected string _className;
 
-        public string Title
-        {
-            get
-            {
-                if (_title == null)
-                {
-                    _title = Native.GetWindowTextWithTimeout(Handle, 500);
-                }
-                return _title;
-            }
-        }
+        public string Title => _title ?? (_title = Native.GetWindowTextWithTimeout(Handle, 500));
 
-        public string Path
-        {
-            get
-            {
-                if (_path == null)
-                {
-                    _path = ProcessUtil.GetProcessPathByWindowHandle(Handle);
-                }
-                return _path;
-            }
-        }
+        public string Path => _path ?? (_path = ProcessUtil.GetProcessPathByWindowHandle(Handle));
 
-        public string Arguments
-        {
-            get
-            {
-                if (_arguments == null)
-                {
-                    _arguments = ProcessUtil.GetCommandLineArguments(Handle);
-                }
-                return _arguments;
-            }
-        }
+        public string Arguments => _arguments ?? (_arguments = ProcessUtil.GetCommandLineArguments(Handle));
 
         public Icon Icon
         {
@@ -90,63 +56,22 @@ namespace DualMonitor.Entities
             }
         }
 
-        public Icon SmallIcon
-        {
-            get
-            {
-                if (_smallIcon == null)
-                {
-                    _smallIcon = Native.GetSmallIconWithTimeout(Handle, 500);                        
+        public Icon SmallIcon => _smallIcon ?? (_smallIcon = Native.GetSmallIconWithTimeout(Handle, 500) ?? Icon);
 
-                    if (_smallIcon == null)
-                    {
-                        _smallIcon = Icon;
-                    }
-                }
-                return _smallIcon;
-            }
-        }
+        public string ClassName => _className ?? (_className = Native.GetClassName(Handle));
 
-        public string ClassName
-        {
-            get
-            {
-                if (_className == null)
-                {
-                    _className = Native.GetClassName(Handle);
-                }
+        public IntPtr Handle => _handle;
 
-                return _className;
-            }
-        }
+        public bool IsMinimized => Native.IsIconic(Handle);
 
-        public IntPtr Handle
-        {
-            get { return _handle; }
-        }        
-
-        public bool IsMinimized
-        {
-            get
-            {
-                return Native.IsIconic(this.Handle);
-            }
-        }
-
-        public Screen Screen
-        {
-            get
-            {
-                return Screen.FromHandle(Handle);
-            }
-        }
+        public Screen Screen => Screen.FromHandle(Handle);
 
         public Rectangle Bounds
         {
             get
             {
                 Native.RECT r;
-                Native.GetWindowRect(this.Handle, out r);
+                Native.GetWindowRect(Handle, out r);
 
                 return (Rectangle)r;
             }
@@ -175,59 +100,40 @@ namespace DualMonitor.Entities
      
         public void MoveWindowTo(Screen screen)
         {
-            if (!this.Screen.Equals(screen))
+            if (!Screen.Equals(screen))
             {
                 Native.RECT r;
                 Native.GetWindowRect(Handle, out r);
 
-                int dx = r.left - Screen.PrimaryScreen.Bounds.Left;
-                int dy = r.top - Screen.PrimaryScreen.Bounds.Top;
+                var width = (screen.Bounds.Right + screen.Bounds.Left) / 2;
+                var height = (screen.Bounds.Bottom + screen.Bounds.Top) / 2;
 
-                Native.MoveWindow(Handle, screen.Bounds.Left + dx, screen.Bounds.Top + dy, r.right - r.left, r.bottom - r.top, true);
+                var windowWidth = r.right - r.left;
+                var windowHeight = r.bottom - r.top;
+
+                Native.MoveWindow(Handle, width - windowWidth/2, height - windowHeight/2, windowWidth, windowHeight, true);
             }
         }
 
         public Win32Window FindWindow(string className)
         {
-            if (this.Handle == IntPtr.Zero)
+            if (Handle == IntPtr.Zero)
             {
-                return Win32Window.FromHandle(IntPtr.Zero);
+                return FromHandle(IntPtr.Zero);
             }
 
-            IntPtr hwnd = Native.FindWindowEx(this.Handle, IntPtr.Zero, className, null);
-            return Win32Window.FromHandle(hwnd);
+            IntPtr hwnd = Native.FindWindowEx(Handle, IntPtr.Zero, className, null);
+            return FromHandle(hwnd);
         }
 
         public void Minimize()
         {
-            Native.ShowWindowAsync(this.Handle, Native.ShowWinCmdMinimized);
+            Native.ShowWindowAsync(Handle, Native.ShowWinCmdMinimized);
         }
 
         public void Restore()
         {
-            Native.ShowWindowAsync(this.Handle, Native.ShowWinCmdRestore);
+            Native.ShowWindowAsync(Handle, Native.ShowWinCmdRestore);
         }
-/*
-        private T CallNativeWithTimeout<T>(Func<T> func, int timeout, T def)
-        {
-            T result = def;
-
-            Console.WriteLine("New thread");
-
-            Thread t = new Thread(delegate()
-            {
-                result = func();
-            });
-
-            t.Start();
-
-            if (!t.Join(timeout))
-            {
-                t.Abort();
-            }
-
-            return result;
-        }
- */
     }
 }

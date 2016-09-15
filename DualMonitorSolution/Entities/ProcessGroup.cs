@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DualMonitor.Controls;
 using System.Drawing;
 
@@ -32,7 +30,7 @@ namespace DualMonitor.Entities
 
         public void Arrange(System.Windows.Forms.Control.ControlCollection controlCollection, int index)
         {
-            this.Sort((x, y) => x.AddedToTaskbar.CompareTo(y.AddedToTaskbar));
+            Sort((x, y) => x.AddedToTaskbar.CompareTo(y.AddedToTaskbar));
             foreach (var item in this)
             {
                 controlCollection.SetChildIndex(item, index);
@@ -42,7 +40,7 @@ namespace DualMonitor.Entities
 
         public TaskbarPinnedButton GetPinnedButton()
         {
-            return this.Find(tb => tb is TaskbarPinnedButton) as TaskbarPinnedButton;
+            return Find(tb => tb is TaskbarPinnedButton) as TaskbarPinnedButton;
         }
     }
 }

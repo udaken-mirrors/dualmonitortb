@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using DualMonitor.Win32;
 using DualMonitor.Entities;
-using DualMonitor.Controls;
 
 namespace DualMonitor.VisualStyle
 {
@@ -16,8 +11,8 @@ namespace DualMonitor.VisualStyle
         {
             if (Native.IsThemeActive() != 0)
             {
-                Pen pen1 = Theme.TaskbarTopLine1;
-                Pen pen2 = Theme.TaskbarTopLine2;
+                var pen1 = Theme.TaskbarTopLine1;
+                var pen2 = Theme.TaskbarTopLine2;
 
                 switch (taskbarLocation)
                 {
@@ -41,10 +36,10 @@ namespace DualMonitor.VisualStyle
             }
             else
             {
-                Pen darkPen = new Pen(Color.FromKnownColor(KnownColor.ControlDark));
-                Pen lighterPen = new Pen(Color.FromKnownColor(KnownColor.ControlLightLight));
-                Pen darkerPen = new Pen(Color.FromKnownColor(KnownColor.ControlDarkDark));
-                Pen lightPen = new Pen(Color.FromKnownColor(KnownColor.ControlLight));
+                var darkPen = new Pen(Color.FromKnownColor(KnownColor.ControlDark));
+                var lighterPen = new Pen(Color.FromKnownColor(KnownColor.ControlLightLight));
+                var darkerPen = new Pen(Color.FromKnownColor(KnownColor.ControlDarkDark));
+                var lightPen = new Pen(Color.FromKnownColor(KnownColor.ControlLight));
 
                 switch (taskbarLocation)
                 {

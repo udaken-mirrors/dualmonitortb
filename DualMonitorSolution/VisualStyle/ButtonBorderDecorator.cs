@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace DualMonitor.VisualStyle
 {
     class ButtonBorderDecorator
     {
-        public static void Draw(System.Drawing.Graphics g, int x, int y, int width, int height, bool isClicked)
+        public static void Draw(Graphics g, int x, int y, int width, int height, bool isClicked)
         {
-            Pen darkPen = new Pen(Color.FromKnownColor(KnownColor.ControlDark));
-            Pen lighterPen = new Pen(Color.FromKnownColor(KnownColor.ControlLightLight));
-            Pen darkerPen = new Pen(Color.FromKnownColor(KnownColor.ControlDarkDark));
-            Pen lightPen = new Pen(Color.FromKnownColor(KnownColor.ControlLight));
+            var darkPen = new Pen(Color.FromKnownColor(KnownColor.ControlDark));
+            var lighterPen = new Pen(Color.FromKnownColor(KnownColor.ControlLightLight));
+            var darkerPen = new Pen(Color.FromKnownColor(KnownColor.ControlDarkDark));
+            var lightPen = new Pen(Color.FromKnownColor(KnownColor.ControlLight));
 
             if (!isClicked)
             {

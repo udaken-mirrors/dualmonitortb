@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DualMonitor.Win32;
-using System.Windows.Forms;
-using System.Collections;
 
 namespace DualMonitor.Entities
 {
@@ -75,7 +71,7 @@ namespace DualMonitor.Entities
             PinnedPrograms = new List<string>();
 
             UseCustomFont = false;
-            CustomFont = new Entities.CustomFont
+            CustomFont = new CustomFont
             {
                 Family = System.Drawing.SystemFonts.IconTitleFont.FontFamily.Name,
                 Size = System.Drawing.SystemFonts.IconTitleFont.Size,

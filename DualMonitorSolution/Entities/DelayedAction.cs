@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -10,7 +7,7 @@ namespace DualMonitor.Entities
     public class DelayedAction
     {
         public bool Active { get; private set; }
-        private Form _form;
+        private readonly Form _form;
 
         public DelayedAction(Form form)
         {
@@ -19,9 +16,9 @@ namespace DualMonitor.Entities
 
         public void Init(Action activate, int delay)
         {
-            this.Active = true;
+            Active = true;
 
-            ThreadPool.QueueUserWorkItem(delegate(object state)
+            ThreadPool.QueueUserWorkItem(delegate
             {
                 DateTime now = DateTime.Now;
 
@@ -44,7 +41,10 @@ namespace DualMonitor.Entities
                     {
                         _form.Invoke(new MethodInvoker(activate));
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
                     this.Active = false;
                 }
             });
@@ -52,7 +52,7 @@ namespace DualMonitor.Entities
 
         public void Cancel()
         {
-            this.Active = false;
+            Active = false;
         }
     }
 }

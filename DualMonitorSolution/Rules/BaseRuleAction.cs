@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DualMonitor.Entities;
+﻿using DualMonitor.Entities;
 
 namespace DualMonitor.Rules
 {
@@ -13,8 +9,8 @@ namespace DualMonitor.Rules
 
         protected BaseRuleAction(Win32Window target, WindowManager windowManager)
         {
-            this.Target = target;
-            this.WindowManager = windowManager;
+            Target = target;
+            WindowManager = windowManager;
         }
 
         public abstract void Handle();

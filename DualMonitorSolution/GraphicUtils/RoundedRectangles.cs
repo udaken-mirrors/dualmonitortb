@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 using System.Drawing;
 
 namespace DualMonitor.GraphicUtils
@@ -18,15 +14,15 @@ namespace DualMonitor.GraphicUtils
         public static GraphicsPath Create(int x, int y, int width, int height,
                                           int radius, RectangleCorners corners)
         {
-            int xw = x + width;
-            int yh = y + height;
-            int xwr = xw - radius;
-            int yhr = yh - radius;
-            int xr = x + radius;
-            int yr = y + radius;
-            int r2 = radius * 2;
-            int xwr2 = xw - r2;
-            int yhr2 = yh - r2;
+            var xw = x + width;
+            var yh = y + height;
+            var xwr = xw - radius;
+            var yhr = yh - radius;
+            var xr = x + radius;
+            var yr = y + radius;
+            var r2 = radius * 2;
+            var xwr2 = xw - r2;
+            var yhr2 = yh - r2;
 
             GraphicsPath p = new GraphicsPath();
             p.StartFigure();

@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using DualMonitor.GraphicUtils;
 using DualMonitor.Entities;
-using System.Drawing.Imaging;
 
 namespace DualMonitor.VisualStyle
 {
     class HighlightDecorator
     {
-        private static Bitmap cacheBitmap;
-        private static Blend HighlightBlend;
+        private static Bitmap _cacheBitmap;
+        private static readonly Blend HighlightBlend;
 
         static HighlightDecorator()
         {
-            HighlightBlend = new Blend();
-            HighlightBlend.Factors = new float[] { 0f, .16f, .95f, 1f };
-            HighlightBlend.Positions = new float[] { 0f, .19f, .75f, 1f };
+            HighlightBlend = new Blend
+            {
+                Factors = new[] {0f, .16f, .95f, 1f},
+                Positions = new[] {0f, .19f, .75f, 1f}
+            };
         }
 
         /// <summary>
@@ -27,16 +24,13 @@ namespace DualMonitor.VisualStyle
         /// </summary>
         public static void Paint(Graphics graphics, Rectangle bounds)
         {
-            if (cacheBitmap == null || cacheBitmap.Width != bounds.Width || cacheBitmap.Height != bounds.Height) 
+            if (_cacheBitmap == null || _cacheBitmap.Width != bounds.Width || _cacheBitmap.Height != bounds.Height) 
             {
-                if (cacheBitmap != null)
-                {
-                    cacheBitmap.Dispose();
-                }
-                cacheBitmap = CreateHighlight(bounds);
+                _cacheBitmap?.Dispose();
+                _cacheBitmap = CreateHighlight(bounds);
             }
 
-            graphics.DrawImage(cacheBitmap, bounds);
+            graphics.DrawImage(_cacheBitmap, bounds);
 
             graphics.FillGradientRectangle(Theme.ButtonHighlight, Theme.ButtonHighlightTransparent,
                     new Rectangle(bounds.Left, bounds.Top, bounds.Width, 20), LinearGradientMode.Vertical);
@@ -68,14 +62,14 @@ namespace DualMonitor.VisualStyle
                                 int x = bmp.Width / 6;
                                 int width = 5 * (bmp.Width - x) / 3;
 
-                                gp.AddEllipse(x - width / 2, -bmp.Height / 2 + 20, width, (int)(bmp.Height + 40));
+                                gp.AddEllipse(x - width / 2, -bmp.Height / 2 + 20, width, bmp.Height + 40);
 
                                 using (PathGradientBrush pgp = new PathGradientBrush(gp))
                                 {
                                     pgp.CenterPoint = new PointF(x, -20);
                                     pgp.CenterColor = Theme.ButtonHighlight;
                                     pgp.Blend = HighlightBlend;
-                                    pgp.SurroundColors = new Color[] { Theme.ButtonHighlightTransparent };
+                                    pgp.SurroundColors = new[] { Theme.ButtonHighlightTransparent };
 
                                     g.FillRectangle(pgp, clientRectangle);
                                 }

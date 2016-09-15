@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using DualMonitor.Entities;
 using System.Windows.Forms;
 
@@ -9,7 +6,7 @@ namespace DualMonitor.Rules
 {
     public class MoveRuleAction : BaseRuleAction
     {
-        private string _moveWhere;
+        private readonly string _moveWhere;
 
         public MoveRuleAction(string moveWhere, Win32Window window, WindowManager windowManager)
             : base (window, windowManager)
@@ -19,18 +16,10 @@ namespace DualMonitor.Rules
 
         public override void Handle()
         {
-            Screen source = Target.Screen;
+            var source = Target.Screen;
             if (string.IsNullOrEmpty(_moveWhere)) return;
 
-            Screen destination;
-            if (_moveWhere == Rule.MOVE_MONITOR_WITH_CURSOR)
-            {
-                destination = Screen.FromPoint(Cursor.Position);
-            }
-            else
-            {
-                destination = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(_moveWhere));
-            }
+            var destination = _moveWhere == Rule.MOVE_MONITOR_WITH_CURSOR ? Screen.FromPoint(Cursor.Position) : Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(_moveWhere));
 
             if (destination == null || destination.DeviceName.Equals(source.DeviceName))
             {

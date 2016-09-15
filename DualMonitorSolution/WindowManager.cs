@@ -139,25 +139,35 @@ namespace DualMonitor
         /// <summary>
         /// Detect programs that appear on secondary screen and move them back to primary taskbar
         /// </summary>
-        public void MoveProgramsToPrimary()
+        public void MoveProgramsToPrimary(bool useCached = false)
         {
-            bool succ = Native.EnumWindows(new Native.EnumDelegate(delegate(IntPtr hwnd, int lParam)
-            {
-                if (Native.IsAltTabVisible(hwnd))
+            if(!useCached)
+            { 
+                bool succ = Native.EnumWindows(new Native.EnumDelegate(delegate(IntPtr hwnd, int lParam)
                 {
-                    Win32Window window = Win32Window.FromHandle(hwnd);
-
-                    Screen s = window.Screen;
-                    if (!s.Primary)
+                    if (Native.IsAltTabVisible(hwnd))
                     {
-                        if (window.Title.Length > 0)
+                        Win32Window window = Win32Window.FromHandle(hwnd);
+
+                        Screen s = window.Screen;
+                        if (!s.Primary)
                         {
-                            AddTab(window.Handle.ToInt32());
+                            if (window.Title.Length > 0)
+                            {
+                                AddTab(window.Handle.ToInt32());
+                            }
                         }
                     }
-                }
-                return true;
-            }), IntPtr.Zero);
+                    return true;
+                }), IntPtr.Zero);
+            }
+            else
+            {
+                CachedProcesses.ForEach(delegate (SecondDisplayProcess p)
+                {
+                    MoveProgramToPrimary(p);
+                });
+            }
         }
 
         /// <summary>

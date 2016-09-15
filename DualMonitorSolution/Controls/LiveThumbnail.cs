@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DualMonitor.Win32;
 using DualMonitor.VisualStyle;
 using System.Drawing;
@@ -10,10 +7,10 @@ namespace DualMonitor.Controls
 {
     public class LiveThumbnail: IDisposable
     {
-        private IntPtr _thumbnail;
+        private readonly IntPtr _thumbnail;
         private LiveThumbnail(IntPtr thumbnailHandle)
         {
-            this._thumbnail = thumbnailHandle;
+            _thumbnail = thumbnailHandle;
         }
 
         public void Dispose()
@@ -67,12 +64,6 @@ namespace DualMonitor.Controls
             AeroDecorator.Instance.DrawThumbnail(r, _thumbnail);
         }
 
-        public bool IsValid
-        {
-            get
-            {
-                return _thumbnail != IntPtr.Zero;
-            }
-        }
+        public bool IsValid => _thumbnail != IntPtr.Zero;
     }
 }

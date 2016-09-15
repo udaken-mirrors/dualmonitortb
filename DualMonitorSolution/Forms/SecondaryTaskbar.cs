@@ -15,6 +15,7 @@ using Gma.UserActivityMonitor;
 using DualMonitor.Win32;
 using DualMonitor.VisualStyle;
 using DualMonitor.Rules;
+using Microsoft.Win32;
 
 namespace DualMonitor.Forms
 {
@@ -902,6 +903,10 @@ namespace DualMonitor.Forms
                 {
                     ABSetPos();
                 }
+            }
+            else
+            {
+                WindowManager.Instance.MoveProgramsToPrimary(true);
             }
         }
 

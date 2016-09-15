@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using DualMonitor.GraphicUtils;
 using DualMonitor.Entities;
-using System.Drawing.Imaging;
 using DualMonitor.Win32;
 
 namespace DualMonitor.VisualStyle
@@ -23,8 +18,8 @@ namespace DualMonitor.VisualStyle
                 graphics.FillRectangle(Theme.DarkBackground, bounds);
             }
 
-            if (taskbarLocation == Win32.Native.ABEdge.Top
-                || taskbarLocation == Win32.Native.ABEdge.Bottom)
+            if (taskbarLocation == Native.ABEdge.Top
+                || taskbarLocation == Native.ABEdge.Bottom)
             {
                 graphics.DrawImage(Properties.Resources.show_desktop_vertical, bounds.Location);
                 graphics.FillGradientRectangle(Theme.ButtonHighlightTransparent, Theme.ButtonHighlight,
