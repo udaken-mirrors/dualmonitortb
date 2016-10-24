@@ -181,7 +181,7 @@ namespace DualMonitor
             if (result != null) return result;
 
             result = SecondDisplayProcess.FromHandle(window.Handle);
-            if (result.Title.Length == 0 || result.Icon == null || string.IsNullOrEmpty(result.Path)) return null;
+            if (result.Title.Length == 0 || string.IsNullOrEmpty(result.Path)) return null;
 
             return CachedProcesses.Add(window.Handle.ToInt32(), result);
         }
