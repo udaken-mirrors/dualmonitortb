@@ -815,7 +815,7 @@ namespace DualMonitor.Win32
         public static bool IsAltTabVisible(IntPtr hWnd)
         {
             int style = Native.GetWindowLong(hWnd, (int)Native.GWL_STYLE);
-            if ((style & (int)Native.WindowStyles.WS_SYSMENU) == 0) return false;
+            if ((style & (int)Native.WindowStyles.WS_CAPTION) == 0) return false;
             if ((style & (int)Native.WindowStyles.WS_CHILDWINDOW) == (int)Native.WindowStyles.WS_CHILDWINDOW) return false;
 
             if (Native.IsWindowVisible(hWnd))
